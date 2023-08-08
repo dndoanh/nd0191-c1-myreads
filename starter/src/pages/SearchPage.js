@@ -1,23 +1,22 @@
-import { useEffect, useState } from "react/cjs/react.production.min";
 import Book from "../components/Book";
 import { search } from "../BooksAPI";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const SearchPage = ({ currentBooks, changeBook }) => {
   const [textInput, setTextInput] = useState("");
   const [searchBooks, setSearchBooks] = useState([]);
 
-  // useEffect to trigger search book function when on change textInput
-  useEffect(() => {
-    searchBook();
-  }, [textInput]);
-
   // call search book API
   function searchBook() {
-    if (length(textInput) < 3) {
+    // check input text, do search only non-empty input text
+    if (textInput === '') {
       setSearchBooks([]);
       return;
     }
+    // do search by api call
     search(textInput).then((data) => {
+      console.log(data);
       // check response data type
       if (!(data instanceof Array)) {
         setSearchBooks([]);
@@ -34,6 +33,11 @@ const SearchPage = ({ currentBooks, changeBook }) => {
       setSearchBooks(newBooks);
     });
   }
+
+  // useEffect to trigger search book function when on change textInput
+  useEffect(() => {
+    searchBook();
+  }, [textInput]);
 
   return (
     <div className="search-books">

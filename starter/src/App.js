@@ -1,8 +1,10 @@
-import { useEffect } from "react/cjs/react.production.min";
+import { useEffect } from "react";
 import "./App.css";
 import { useState } from "react";
 import { getAll, update } from "./BooksAPI";
+import { Route, Routes } from "react-router-dom";
 import BooksPage from "./pages/BooksPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -31,7 +33,7 @@ function App() {
         />
         <Route
           path="/search"
-          element={<SearchPage booksOnShelf={books} moveBook={moveBook} />}
+          element={<SearchPage currentBooks={books} changeBook={changeBook} />}
         />
       </Routes>
     </div>

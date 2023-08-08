@@ -11,8 +11,11 @@ const Book = ({ book, changeBook }) => {
           }}
         ></div>
         <div className="book-shelf-changer">
-          <select onChange={(e) => changeBook(book, e.target.value)}>
-            <option value="none" disabled>
+          <select
+            value={book.shelf ? book.shelf : "none"}
+            onChange={(e) => changeBook(book, e.target.value)}
+          >
+            <option value="xxx" disabled>
               Move to...
             </option>
             <option value="currentlyReading">Currently Reading</option>
@@ -23,7 +26,7 @@ const Book = ({ book, changeBook }) => {
         </div>
       </div>
       <div className="book-title">{book.title}</div>
-      <div className="book-authors">{book.authors.join()}</div>
+      <div className="book-authors">{book.authors && book.authors.join()}</div>
     </div>
   );
 };

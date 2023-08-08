@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { Shelf } from "../components/Shelf";
+import Shelf from "../components/Shelf";
 
-const BooksPage = (books, changeBook) => {
+const BooksPage = ({ books, changeBook }) => {
   return (
     <div className="list-books">
       <div className="list-books-title">
