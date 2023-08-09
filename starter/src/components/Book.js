@@ -1,4 +1,28 @@
+import PropTypes from "prop-types";
+
 const Book = ({ book, changeBook }) => {
+  const shelves = [
+    {
+      id: "1",
+      shelfName: "currentReading",
+      shelfDisplayName: "Currently Reading",
+    },
+    {
+      id: "2",
+      shelfName: "wantToRead",
+      shelfDisplayName: "Want to Read",
+    },
+    {
+      id: "3",
+      shelfName: "read",
+      shelfDisplayName: "Read",
+    },
+    {
+      id: "4",
+      shelfName: "none",
+      shelfDisplayName: "None",
+    },
+  ];
   return (
     <div className="book">
       <div className="book-top">
@@ -7,7 +31,9 @@ const Book = ({ book, changeBook }) => {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: `url("${book.imageLinks.smallThumbnail}")`,
+            backgroundImage: book.imageLinks.thumbnail
+              ? `url("${book.imageLinks.smallThumbnail}")`
+              : "",
           }}
         ></div>
         <div className="book-shelf-changer">
@@ -18,10 +44,11 @@ const Book = ({ book, changeBook }) => {
             <option value="xxx" disabled>
               Move to...
             </option>
-            <option value="currentlyReading">Currently Reading</option>
-            <option value="wantToRead">Want to Read</option>
-            <option value="read">Read</option>
-            <option value="none">None</option>
+            {shelves.map((item) => (
+              <option key={item.id} value={item.shelfName}>
+                {item.shelfDisplayName}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -30,4 +57,10 @@ const Book = ({ book, changeBook }) => {
     </div>
   );
 };
+
+Book.propTypes = {
+  book: PropTypes.object.isRequired,
+  changeBook: PropTypes.func.isRequired,
+};
+
 export default Book;

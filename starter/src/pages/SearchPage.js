@@ -2,6 +2,7 @@ import Book from "../components/Book";
 import { search } from "../BooksAPI";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import debounce from "lodash.debounce";
 
 const SearchPage = ({ currentBooks, changeBook }) => {
   const [textInput, setTextInput] = useState("");
@@ -10,28 +11,32 @@ const SearchPage = ({ currentBooks, changeBook }) => {
   // call search book API
   function searchBook() {
     // check input text, do search only non-empty input text
-    if (textInput === '') {
+    if (textInput === "") {
       setSearchBooks([]);
       return;
     }
-    // do search by api call
-    search(textInput).then((data) => {
-      console.log(data);
-      // check response data type
-      if (!(data instanceof Array)) {
-        setSearchBooks([]);
-        return;
-      }
-      // check current books on shelf, if existing then update shelf accordingly
-      let newBooks = data.map((item) => {
-        const existingBook = currentBooks.find(
-          (currBook) => currBook.id === item.id
-        );
-        item.shelf = existingBook ? existingBook.shelf : "none";
-        return item;
+    // use debounce to ensure search api only calling after 300 miliseconds
+    const debouncedSearch = debounce(() => {
+      // do search by api call
+      search(textInput).then((data) => {
+        console.log(data);
+        // check response data type
+        if (!(data instanceof Array)) {
+          setSearchBooks([]);
+          return;
+        }
+        // check current books on shelf, if existing then update shelf accordingly
+        let newBooks = data.map((item) => {
+          const existingBook = currentBooks.find(
+            (currBook) => currBook.id === item.id
+          );
+          item.shelf = existingBook ? existingBook.shelf : "none";
+          return item;
+        });
+        setSearchBooks(newBooks);
       });
-      setSearchBooks(newBooks);
-    });
+    }, 300);
+    debouncedSearch();
   }
 
   // useEffect to trigger search book function when on change textInput
