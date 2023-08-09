@@ -31,7 +31,7 @@ const Book = ({ book, changeBook }) => {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: book.imageLinks.thumbnail
+            backgroundImage: book.imageLinks
               ? `url("${book.imageLinks.smallThumbnail}")`
               : "",
           }}
